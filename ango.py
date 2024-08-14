@@ -1,5 +1,6 @@
 import random
 import math
+import sys
 print("暗号化しますか?復元化しますか?a/h")
 kotae = input()
 spell1 = ["¿", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ",", ".", "!", "?", "-", "_", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "=", "~", "^", ";", ":", "[", "]", "+", "*", "/", "<", ">", "|", "@", " "]
@@ -20,9 +21,9 @@ for i in range(spell1_len - 1):
     spell1.pop((i * 100) % (len(spell1) - 1))
 spell.append(spell1[0])
 if kotae == "a":
-    rand = random.randint(2, 5)
-    rand2 = random.randint(2, 3)
-    print("暗号化する文章を入れてください。(だいたい全部変換できます。)")
+    rand = random.randint(1, 99)
+    rand2 = random.randint(1, 9)
+    print("暗号化する文章を入れてください。(だいたい全部変換できます。)(半角カタカナ変換不可)")
     bunsyou = input()
     angounum = []
     ango = ""
@@ -38,22 +39,32 @@ if kotae == "a":
         angounum[i] = angounum[i] % len(spell)
     for i in range(len(bunsyou)):
         ango = ango + spell[angounum[i]]
-    ango = ango + spell[rand]
-    ango = ango + spell[rand2]
-    print(ango)
+    print("暗号文 : "+ ango)
+    if rand < 10:
+        print("鍵 : 0" + str(rand) + str(rand2))
+    else:
+        print("鍵 : " + str(rand) + str(rand2))
 elif kotae == "h":
     print("復元化する文章を入れてください。(変換不能文字は「¿」として出ます。)")
     bunsyou = input()
+    print("鍵を入れてください。")
+    kagi = input()
     angounum = []
     ango = ""
     for i in range(len(bunsyou)):
         j = 0
         while bunsyou[i] != spell[j]:
             j += 1
-        angounum.append((j + len(spell) * 1000000))
-    for i in range(len(bunsyou) - 2):
-        angounum[i] = (angounum[i] - int(angounum[-2]) - int(angounum[-1]) * i) % len(spell)
-    for i in range(len(bunsyou) - 2):
+        angounum.append((j + len(spell) * 1000000000))
+    try:
+        if len(kagi) > 3:
+            a = b
+        for i in range(len(bunsyou)):
+            angounum[i] = (angounum[i] - int(kagi[:2]) - int(kagi[-1]) * i) % len(spell)
+    except:
+        print("鍵が間違っています。")
+        sys.exit()
+    for i in range(len(bunsyou)):
         ango = ango + spell[angounum[i]]
     print(ango)
 else:
